@@ -12,7 +12,7 @@ pub fn handle_command(args: &[String]) -> Result<(), Box<dyn Error>> {
             let cutoff_file = N26CsvCutoffFile {
                 filename: filename.to_string(),
             };
-            import(LogTransactionRepository, cutoff_file)
+            import(&LogTransactionRepository, &cutoff_file)
         }
         _ => Err(format!("Unknown command: {}", command).into()),
     }

@@ -5,7 +5,7 @@ use std::io;
 use crate::domain::transaction::{Transaction, TransactionRepository};
 
 pub trait CutoffDecoder {
-    fn decode(&self, record: csv::StringRecord) -> Result<Transaction, Box<dyn std::error::Error>>;
+    fn decode(&self, record: &csv::StringRecord) -> Result<Transaction, Box<dyn Error>>;
 }
 
 pub trait CutoffStorage<C>
@@ -18,10 +18,7 @@ where
 
 type ImportResult = Vec<Result<Transaction, Box<dyn Error>>>;
 
-pub fn import<R, S, C>(
-    transaction_repository: R,
-    storage: S,
-) -> Result<(), Box<dyn std::error::Error>>
+pub fn import<R, S, C>(transaction_repository: &R, storage: &S) -> Result<(), Box<dyn Error>>
 where
     R: TransactionRepository,
     S: CutoffStorage<C>,
@@ -34,7 +31,7 @@ where
         .map(|record| {
             record
                 .map_err(|e| e.into())
-                .and_then(|r| storage.decoder().decode(r))
+                .and_then(|r| storage.decoder().decode(&r))
         })
         .partition(Result::is_ok);
     if !err.is_empty() {

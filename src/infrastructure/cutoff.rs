@@ -23,7 +23,7 @@ struct N26CsvCutoff {
 pub struct N26CsvCutoffDecoder {}
 
 impl CutoffDecoder for N26CsvCutoffDecoder {
-    fn decode(&self, record: csv::StringRecord) -> Result<Transaction, Box<dyn Error>> {
+    fn decode(&self, record: &csv::StringRecord) -> Result<Transaction, Box<dyn Error>> {
         record
             .deserialize(None)
             .map_err(|e| e.into())
