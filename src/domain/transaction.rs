@@ -1,7 +1,7 @@
 use bigdecimal::BigDecimal;
 use chrono::NaiveDate;
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 pub struct Transaction {
     pub date: NaiveDate,
     pub payee: String,
